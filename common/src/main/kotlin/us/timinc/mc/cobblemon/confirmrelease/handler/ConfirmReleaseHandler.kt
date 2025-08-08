@@ -29,7 +29,7 @@ object ConfirmReleaseHandler : AbstractHandler<ReleasePokemonEvent.Pre>() {
         evt.cancel()
 
         val player = evt.player
-        val receipt = ConfirmReleaseReceipt.Data(pokemon)
+        val receipt = ConfirmReleaseReceipt.Data(pokemon, releaseGuard)
         val packetId = CONFIRM_RELEASE.hangReceipt(player, receipt)
         caseDebugger.debug("Sending confirm release request to client for ${player.name}. ($packetId)")
         val packet = receipt.toPacket(packetId)

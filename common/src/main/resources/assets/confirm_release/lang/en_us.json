@@ -1,5 +1,6 @@
 {
   "confirm_release.feedback.release_cancelled": "Cancelled the release of %1$s.",
   "confirm_release.feedback.release_confirmed": "Goodbye, %1$s, you shall be missed.",
-  "confirm_release.ui.confirm_release": "Are you sure you would like to release %1$s?"
+  "confirm_release.ui.confirm_release": "Are you sure you would like to release %1$s?",
+  "confirm_release.feedback.reasons.shiny": "It's a shiny Pokémon."
 }

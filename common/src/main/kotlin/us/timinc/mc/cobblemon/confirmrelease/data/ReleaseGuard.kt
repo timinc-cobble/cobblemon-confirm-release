@@ -16,6 +16,7 @@ class ReleaseGuard(
     val id: ResourceLocation,
     val matcher: PokemonMatcher,
     val priority: Int,
+    val message: String
 ) {
     object Manager : AbstractReloadListener(Gson(), "release_guard") {
         private var guards: MutableMap<Int, MutableList<ReleaseGuard>> = mutableMapOf()
@@ -35,21 +36,25 @@ class ReleaseGuard(
         }
 
         private fun parseGuard(id: ResourceLocation, json: JsonObject): ReleaseGuard {
-            val priority = json.getOrNull("priority")!!.asInt
-            return ReleaseGuard(id, PokemonMatcher(
-                json.getOrNull("properties")?.asString ?: "",
-                json.getOrNull("labels")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
-                json.getOrNull("anyLabel")?.asBoolean ?: false,
-                json.getOrNull("persistentData")?.let {
-                    it.asJsonObject.entrySet().fold(mutableMapOf()) { acc, (k, v) ->
-                        acc[k] = v.asString
-                        acc
-                    }
-                } ?: mutableMapOf(),
-                json.getOrNull("anyPersistentData")?.asBoolean ?: false,
-                json.getOrNull("buckets")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
-                json.getOrNull("matchOne")?.asBoolean ?: false
-            ), priority)
+            return ReleaseGuard(
+                id,
+                PokemonMatcher(
+                    json.getOrNull("properties")?.asString ?: "",
+                    json.getOrNull("labels")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
+                    json.getOrNull("anyLabel")?.asBoolean ?: false,
+                    json.getOrNull("persistentData")?.let {
+                        it.asJsonObject.entrySet().fold(mutableMapOf()) { acc, (k, v) ->
+                            acc[k] = v.asString
+                            acc
+                        }
+                    } ?: mutableMapOf(),
+                    json.getOrNull("anyPersistentData")?.asBoolean ?: false,
+                    json.getOrNull("buckets")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
+                    json.getOrNull("matchOne")?.asBoolean ?: false,
+                ),
+                json.getOrNull("priority")!!.asInt,
+                json.getOrNull("message")?.asString ?: ""
+            )
         }
 
         fun findMatching(pokemon: Pokemon): ReleaseGuard? {

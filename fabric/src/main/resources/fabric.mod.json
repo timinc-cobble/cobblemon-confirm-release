@@ -22,7 +22,8 @@
     "minecraft": "${minecraft_version}",
     "fabric": "*",
     "cobblemon": "${cobblemon_version}",
-    "tim_core": ">=${tim_core_fabric_version}"
+    "tim_core": ">=${tim_core_fabric_version}",
+    "owo": "${owo_fabric_version}"
   },
   "contact": {
     "homepage": "${modDiscord}",

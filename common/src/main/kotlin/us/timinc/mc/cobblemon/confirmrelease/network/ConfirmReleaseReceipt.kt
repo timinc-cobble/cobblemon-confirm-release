@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component
 import us.timinc.mc.cobblemon.confirmrelease.ConfirmRelease
 import us.timinc.mc.cobblemon.confirmrelease.ConfirmRelease.Holders.CONFIRM_RELEASE
 import us.timinc.mc.cobblemon.confirmrelease.ConfirmRelease.Network.sendServerPacket
+import us.timinc.mc.cobblemon.confirmrelease.data.ReleaseGuard
 import us.timinc.mc.cobblemon.confirmrelease.handler.ConfirmReleaseHandler.finishRelease
 import us.timinc.mc.cobblemon.confirmrelease.screen.ConfirmReleaseScreen
 import us.timinc.mc.cobblemon.timcore.Holder
@@ -20,6 +21,7 @@ object ConfirmReleaseReceipt :
     data class Packet(
         val id: UUID,
         val name: Component,
+        val message: Component
     ) {
         fun accept() {
             sendServerPacket(Response(id, true))
@@ -38,8 +40,9 @@ object ConfirmReleaseReceipt :
 
     class Data(
         val pokemon: Pokemon,
+        val guard: ReleaseGuard
     ) : Holder.ReceiptPacketMaker<Packet> {
-        override fun toPacket(id: UUID) = Packet(id, pokemon.getDisplayName())
+        override fun toPacket(id: UUID) = Packet(id, pokemon.getDisplayName(), Component.translatable(guard.message))
     }
 
     override fun handleClient(data: Packet, clientAccess: ClientAccess) {

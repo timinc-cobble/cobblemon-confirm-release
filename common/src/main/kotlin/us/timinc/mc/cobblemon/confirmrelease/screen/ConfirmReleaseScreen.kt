@@ -16,6 +16,9 @@ class ConfirmReleaseScreen(private val packet: ConfirmReleaseReceipt.Packet) :
         val confirmLabel = layout.childById(LabelComponent::class.java, "confirm-label")
         confirmLabel.text(confirmRelease(packet.name))
 
+        val messageLabel = layout.childById(LabelComponent::class.java, "message-label")
+        messageLabel.text(packet.message)
+
         val acceptButton = layout.childById(ButtonComponent::class.java, "accept-button")
         acceptButton.onPress {
             responded = true
