@@ -5,6 +5,9 @@ import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
+import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener
+import us.timinc.mc.cobblemon.confirmrelease.data.ReleaseGuard
 import us.timinc.mc.cobblemon.confirmrelease.handler.ConfirmReleaseHandler
 import us.timinc.mc.cobblemon.confirmrelease.network.ConfirmReleaseReceipt
 import us.timinc.mc.cobblemon.timcore.*
@@ -13,9 +16,7 @@ const val MOD_ID: String = "confirm_release"
 
 object ConfirmRelease : AbstractMod<ConfirmRelease.ConfirmReleaseConfig>(MOD_ID, ConfirmReleaseConfig::class.java) {
 
-    class ConfirmReleaseConfig : AbstractConfig() {
-        val confirmFor: List<PokemonMatcher> = listOf(PokemonMatcher(properties = "shiny"))
-    }
+    class ConfirmReleaseConfig : AbstractConfig()
 
     object Network : AbstractOwoNetwork(modResource("main")) {
         init {
@@ -49,5 +50,6 @@ object ConfirmRelease : AbstractMod<ConfirmRelease.ConfirmReleaseConfig>(MOD_ID,
         Network
         Holders
         CobblemonEvents.POKEMON_RELEASED_EVENT_PRE.subscribe(Priority.LOWEST, ConfirmReleaseHandler::handle)
+        registerReloadListener(ReleaseGuard.Manager)
     }
 }
