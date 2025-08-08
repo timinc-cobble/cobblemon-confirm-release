@@ -6,7 +6,6 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener
 import net.minecraft.util.profiling.ProfilerFiller
 import us.timinc.mc.cobblemon.timcore.AbstractReloadListener
 import us.timinc.mc.cobblemon.timcore.PokemonMatcher
@@ -16,7 +15,7 @@ class ReleaseGuard(
     val id: ResourceLocation,
     val matcher: PokemonMatcher,
     val priority: Int,
-    val message: String
+    val message: String,
 ) {
     object Manager : AbstractReloadListener(Gson(), "release_guard") {
         private var guards: MutableMap<Int, MutableList<ReleaseGuard>> = mutableMapOf()
@@ -36,21 +35,22 @@ class ReleaseGuard(
         }
 
         private fun parseGuard(id: ResourceLocation, json: JsonObject): ReleaseGuard {
+            val matcherJson = json.getOrNull("matcher")!!.asJsonObject
             return ReleaseGuard(
                 id,
                 PokemonMatcher(
-                    json.getOrNull("properties")?.asString ?: "",
-                    json.getOrNull("labels")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
-                    json.getOrNull("anyLabel")?.asBoolean ?: false,
-                    json.getOrNull("persistentData")?.let {
+                    matcherJson.getOrNull("properties")?.asString ?: "",
+                    matcherJson.getOrNull("labels")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
+                    matcherJson.getOrNull("anyLabel")?.asBoolean ?: false,
+                    matcherJson.getOrNull("persistentData")?.let {
                         it.asJsonObject.entrySet().fold(mutableMapOf()) { acc, (k, v) ->
                             acc[k] = v.asString
                             acc
                         }
                     } ?: mutableMapOf(),
-                    json.getOrNull("anyPersistentData")?.asBoolean ?: false,
-                    json.getOrNull("buckets")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
-                    json.getOrNull("matchOne")?.asBoolean ?: false,
+                    matcherJson.getOrNull("anyPersistentData")?.asBoolean ?: false,
+                    matcherJson.getOrNull("buckets")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
+                    matcherJson.getOrNull("matchOne")?.asBoolean ?: false,
                 ),
                 json.getOrNull("priority")!!.asInt,
                 json.getOrNull("message")?.asString ?: ""
