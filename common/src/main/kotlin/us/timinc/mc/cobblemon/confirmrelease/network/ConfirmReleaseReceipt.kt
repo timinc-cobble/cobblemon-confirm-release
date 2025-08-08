@@ -53,7 +53,7 @@ object ConfirmReleaseReceipt :
                 receipt.player.sendSystemMessage(ConfirmRelease.TranslationComponents.releaseCancelled(receipt.data.pokemon))
                 return
             }
-            finishRelease(receipt.player, receipt.data.pokemon)
+            finishRelease(receipt.player, receipt.data.pokemon, data.id)
         } catch (e: Error) {
             debugger.debug(e.message ?: "An error occurred while handling ConfirmReleaseReceipt on server.", true)
         }
