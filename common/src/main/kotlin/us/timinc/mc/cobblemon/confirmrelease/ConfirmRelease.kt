@@ -5,12 +5,13 @@ import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
-import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener
 import us.timinc.mc.cobblemon.confirmrelease.data.ReleaseGuard
 import us.timinc.mc.cobblemon.confirmrelease.handler.ConfirmReleaseHandler
 import us.timinc.mc.cobblemon.confirmrelease.network.ConfirmReleaseReceipt
-import us.timinc.mc.cobblemon.timcore.*
+import us.timinc.mc.cobblemon.timcore.AbstractConfig
+import us.timinc.mc.cobblemon.timcore.AbstractMod
+import us.timinc.mc.cobblemon.timcore.AbstractOwoNetwork
+import us.timinc.mc.cobblemon.timcore.Holder
 
 const val MOD_ID: String = "confirm_release"
 

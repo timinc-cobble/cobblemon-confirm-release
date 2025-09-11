@@ -3,7 +3,6 @@ package us.timinc.mc.cobblemon.confirmrelease.data
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.google.gson.Gson
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import com.mojang.serialization.codecs.RecordCodecBuilder
@@ -12,7 +11,6 @@ import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.util.profiling.ProfilerFiller
 import us.timinc.mc.cobblemon.timcore.AbstractReloadListener
 import us.timinc.mc.cobblemon.timcore.PokemonMatcher
-import us.timinc.mc.cobblemon.timcore.getOrNull
 
 class ReleaseGuard(
     val matcher: PokemonMatcher,
