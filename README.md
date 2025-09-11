@@ -1,6 +1,6 @@
 # Confirm Release(/Let Go)
 
-v1.6.1-1.2.0
+v1.6.1-1.2.0 - v1.6.1-1.2.1
 
 [Modrinth](https://modrinth.com/mod/cobblemon-confirm-release)
 
@@ -42,6 +42,10 @@ By default, the mod ensures that player would actually like to release a shiny P
 [Translations](https://www.notion.so/Translations-24857e0d4afd8016a8e3d2b322e1d4a6?pvs=21)
 
 [Resources](https://www.notion.so/Resources-24857e0d4afd801e8b73fc27af2a3216?pvs=21)
+
+## Known Issues
+
+- v1.6.1-1.2.0 had an issue with the `PokemonMatcher` form addition in [Tim Core v1.6.1-1.9.0](https://www.notion.so/Tim-Core-v1-6-1-1-9-0-26a57e0d4afd80a38e5be87704342ee5?pvs=21). v1.6.1-1.2.1 migrated to using CODECs instead of manually building the `PokemonMatcher` itself, so that sort of conflict won’t happen again.
 
 ## Roadmap
 
