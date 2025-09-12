@@ -21,7 +21,7 @@ object ConfirmReleaseReceipt :
     data class Packet(
         val id: UUID,
         val name: Component,
-        val message: Component
+        val message: Component,
     ) {
         fun accept() {
             sendServerPacket(Response(id, true))
@@ -40,7 +40,7 @@ object ConfirmReleaseReceipt :
 
     class Data(
         val pokemon: Pokemon,
-        val guard: ReleaseGuard
+        val guard: ReleaseGuard,
     ) : Holder.ReceiptPacketMaker<Packet> {
         override fun toPacket(id: UUID) = Packet(id, pokemon.getDisplayName(), Component.translatable(guard.message))
     }

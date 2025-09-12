@@ -3,20 +3,32 @@ package us.timinc.mc.cobblemon.confirmrelease.data
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.google.gson.Gson
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import com.mojang.serialization.Codec
+import com.mojang.serialization.JsonOps
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.util.profiling.ProfilerFiller
 import us.timinc.mc.cobblemon.timcore.AbstractReloadListener
 import us.timinc.mc.cobblemon.timcore.PokemonMatcher
-import us.timinc.mc.cobblemon.timcore.getOrNull
 
 class ReleaseGuard(
-    val id: ResourceLocation,
     val matcher: PokemonMatcher,
     val priority: Int,
     val message: String,
 ) {
+    var id: ResourceLocation? = null
+
+    companion object {
+        val CODEC: Codec<ReleaseGuard> = RecordCodecBuilder.create { instance ->
+            instance.group(
+                PokemonMatcher.CODEC.fieldOf("matcher").forGetter { it.matcher },
+                Codec.INT.fieldOf("priority").forGetter { it.priority },
+                Codec.STRING.fieldOf("message").forGetter { it.message }
+            ).apply(instance, ::ReleaseGuard)
+        }
+    }
+
     object Manager : AbstractReloadListener(Gson(), "release_guard") {
         private var guards: MutableMap<Int, MutableList<ReleaseGuard>> = mutableMapOf()
 
@@ -27,34 +39,12 @@ class ReleaseGuard(
         ) {
             guards.clear()
             objectMap.entries.forEach { (id, json) ->
-                val guard = parseGuard(id, json as JsonObject)
+                val guard = CODEC.parse(JsonOps.INSTANCE, json).orThrow
+                guard.id = id
                 if (!guards.containsKey(guard.priority)) guards[guard.priority] = mutableListOf()
                 val priorityList = guards[guard.priority]!!
                 priorityList.add(guard)
             }
-        }
-
-        private fun parseGuard(id: ResourceLocation, json: JsonObject): ReleaseGuard {
-            val matcherJson = json.getOrNull("matcher")!!.asJsonObject
-            return ReleaseGuard(
-                id,
-                PokemonMatcher(
-                    matcherJson.getOrNull("properties")?.asString ?: "",
-                    matcherJson.getOrNull("labels")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
-                    matcherJson.getOrNull("anyLabel")?.asBoolean ?: false,
-                    matcherJson.getOrNull("persistentData")?.let {
-                        it.asJsonObject.entrySet().fold(mutableMapOf()) { acc, (k, v) ->
-                            acc[k] = v.asString
-                            acc
-                        }
-                    } ?: mutableMapOf(),
-                    matcherJson.getOrNull("anyPersistentData")?.asBoolean ?: false,
-                    matcherJson.getOrNull("buckets")?.asJsonArray?.map(JsonElement::getAsString) ?: emptyList(),
-                    matcherJson.getOrNull("matchOne")?.asBoolean ?: false,
-                ),
-                json.getOrNull("priority")!!.asInt,
-                json.getOrNull("message")?.asString ?: ""
-            )
         }
 
         fun findMatching(pokemon: Pokemon): ReleaseGuard? {
