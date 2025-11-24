@@ -1,6 +1,6 @@
 # Confirm Release(/Let Go)
 
-v1.6.1-1.2.0 - v1.6.1-1.2.1
+v1.7.0-1.21.1
 
 [Modrinth](https://modrinth.com/mod/cobblemon-confirm-release)
 
