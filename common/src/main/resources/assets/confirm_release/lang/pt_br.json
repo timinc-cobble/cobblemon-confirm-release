@@ -1,0 +1,6 @@
+{
+  "confirm_release.feedback.release_cancelled": "Cancelado o envio de %1$s.",
+  "confirm_release.feedback.release_confirmed": "Adeus, %1$s, você fará falta.",
+  "confirm_release.ui.confirm_release": "Tem certeza de que gostaria de enviar %1$s?",
+  "confirm_release.feedback.reasons.shiny": "É um Pokémon Brilhante."
+}
