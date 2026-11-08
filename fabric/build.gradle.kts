@@ -20,12 +20,18 @@ loom {
 val shadowCommon = configurations.create("shadowCommon")
 
 dependencies {
+    // Cobblemon Showdown development runtime; not bundled in this mod.
+    modRuntimeOnly("org.graalvm.sdk:graal-sdk:22.3.0")
+    modRuntimeOnly("org.graalvm.truffle:truffle-api:22.3.0")
+    modRuntimeOnly("org.graalvm.js:js:22.3.0")
+    modRuntimeOnly("org.graalvm.regex:regex:22.3.0")
+    modRuntimeOnly("com.ibm.icu:icu4j:71.1")
+    minecraftServerLibraries("com.ibm.icu:icu4j:71.1")
     minecraft("com.mojang:minecraft:${property("minecraft_version")}")
     mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:${property("fabric_loader_version")}")
 
-    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${property("fabric_api_version")}")
-    modImplementation(fabricApi.module("fabric-command-api-v2", property("fabric_api_version").toString()))
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api_version")}")
 
     //needed for cobblemon
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin")}")
